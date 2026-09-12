@@ -1,0 +1,5 @@
+transaction_id,transaction_ts,customer_id,product_id,quantity,unit_price
+T001,2026-09-01 09:15:00,C001,P001,1,1200
+T002,2026-09-01 10:20:00,C002,P002,2,25
+T003,2026-09-01 11:30:00,C003,P003,1,80
+T004,2026-09-01 14:00:00,C001,P002,1,25
