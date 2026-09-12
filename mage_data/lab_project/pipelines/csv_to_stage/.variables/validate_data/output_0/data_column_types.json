@@ -1,1 +1,0 @@
-{"transaction_id": "str", "transaction_ts": "datetime64[ns]", "customer_id": "str", "product_id": "str", "quantity": "int64", "unit_price": "int64", "source_file": "str"}
