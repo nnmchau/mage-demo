@@ -16,6 +16,7 @@ def export_data_to_postgres(df: DataFrame, **kwargs) -> None:
 
     Docs: https://docs.mage.ai/design/data-loading#postgresql
     """
+    df = df.copy()
     schema_name = 'stage'  # Specify the name of the schema to export data to
     table_name = 'transactions'  # Specify the name of the table to export data to
     config_path = path.join(get_repo_path(), 'io_config.yaml')
@@ -27,7 +28,5 @@ def export_data_to_postgres(df: DataFrame, **kwargs) -> None:
             schema_name,
             table_name,
             index=False,  # Specifies whether to include index in exported table
-            if_exists='append', 
-            unique_constraints=['transaction_id'], #Using transaction_id as unique key to identify conflicts data
-            unique_conflict_method='UPDATE', # Specify resolution policy if table name already exists
+            if_exists='replace',  # Specify resolution policy if table name already exists
         )
