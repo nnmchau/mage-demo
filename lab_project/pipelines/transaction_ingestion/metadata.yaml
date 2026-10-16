@@ -3,8 +3,8 @@ blocks:
   color: null
   configuration: {}
   downstream_blocks:
-  - filter_incremental
   - commit_watermark
+  - filter_incremental
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -61,7 +61,7 @@ blocks:
   language: python
   name: standardize_and_validate
   retry_config: null
-  status: failed
+  status: executed
   timeout: null
   type: transformer
   upstream_blocks:
@@ -106,8 +106,8 @@ blocks:
   timeout: null
   type: custom
   upstream_blocks:
-  - load_stage
   - get_extraction_window
+  - load_stage
   uuid: commit_watermark
 cache_block_output_in_memory: false
 callbacks: []
@@ -132,7 +132,6 @@ tags: []
 type: python
 uuid: transaction_ingestion
 variables:
-  cet_override: '2026-09-01 12:00:00'
   file_pattern: transactions_*.csv
   source_folder: /home/src/data/landing
 variables_dir: /home/src/mage_data/lab_project

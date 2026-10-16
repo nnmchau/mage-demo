@@ -16,6 +16,8 @@ def export_data_to_postgres(df: DataFrame, **kwargs) -> None:
 
     Docs: https://docs.mage.ai/design/data-loading#postgresql
     """
+    if df.empty:
+        return df
     df = df.copy()
     schema_name = 'stage'  # Specify the name of the schema to export data to
     table_name = 'transactions'  # Specify the name of the table to export data to

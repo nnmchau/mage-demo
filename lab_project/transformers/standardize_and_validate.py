@@ -21,7 +21,7 @@ def transform(data, *args, **kwargs):
     """
     # Specify your transformation logic here
     if data.empty:
-        return df
+        return data
 
     df = data.copy()
 
