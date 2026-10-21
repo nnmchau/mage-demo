@@ -1,0 +1,14 @@
+sources:
+- description: Dataframes Mage upstream blocks
+  loader: mage
+  name: mage_dbt_project
+  schema: dds
+  tables:
+  - description: Dataframe for block `load_stage` of the `transaction_ingestion` mage
+      pipeline.
+    identifier: mage_transaction_ingestion_load_stage
+    meta:
+      block_uuid: load_stage
+      pipeline_uuid: transaction_ingestion
+    name: transaction_ingestion_load_stage
+version: 2

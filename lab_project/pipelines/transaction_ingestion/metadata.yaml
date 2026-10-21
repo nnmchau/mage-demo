@@ -3,8 +3,8 @@ blocks:
   color: null
   configuration: {}
   downstream_blocks:
-  - commit_watermark
   - filter_incremental
+  - commit_watermark
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -71,7 +71,7 @@ blocks:
   color: null
   configuration: {}
   downstream_blocks:
-  - commit_watermark
+  - dbt_transformation
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -84,6 +84,35 @@ blocks:
   upstream_blocks:
   - standardize_and_validate
   uuid: load_stage
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    data_provider: postgres
+    data_provider_profile: default
+    data_provider_schema: control
+    dbt:
+      command: run
+    dbt_profile_target: dev
+    dbt_project_name: dbt/dbt_project
+    disable_query_preprocessing: false
+    export_write_policy: append
+    file_source:
+      path: dbts/dbt_transformation.yaml
+    use_raw_sql: false
+  downstream_blocks:
+  - commit_watermark
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: yaml
+  name: dbt_transformation
+  retry_config: null
+  status: executed
+  timeout: null
+  type: dbt
+  upstream_blocks:
+  - load_stage
+  uuid: dbt_transformation
 - all_upstream_blocks_executed: true
   color: blue
   configuration:
@@ -102,12 +131,12 @@ blocks:
   language: sql
   name: commit_watermark
   retry_config: null
-  status: updated
+  status: executed
   timeout: null
   type: custom
   upstream_blocks:
+  - dbt_transformation
   - get_extraction_window
-  - load_stage
   uuid: commit_watermark
 cache_block_output_in_memory: false
 callbacks: []
@@ -132,6 +161,7 @@ tags: []
 type: python
 uuid: transaction_ingestion
 variables:
+  cet_override: '2026-09-02 00:00:00'
   file_pattern: transactions_*.csv
   source_folder: /home/src/data/landing
 variables_dir: /home/src/mage_data/lab_project

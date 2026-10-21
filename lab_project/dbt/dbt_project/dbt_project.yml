@@ -1,0 +1,14 @@
+name: 'dw_bi'
+version: '1.0.0'
+config-version: 2
+
+profile: 'dw_bi'
+
+model-paths: ['models']
+
+models:
+  dw_bi:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table

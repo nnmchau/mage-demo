@@ -1,5 +1,4 @@
 services:
-
   postgres:
     image: postgres:17
     container_name: lab-postgres
@@ -26,7 +25,6 @@ services:
       timeout: 5s
       retries: 10
 
-
   mage:
     build: .
     container_name: lab-mage
@@ -40,6 +38,13 @@ services:
 
     environment:
       USER_CODE_PATH: /home/src/lab_project
+      # dbt-project resides at ./dbt_project on the host and is available
+      # as /home/src/dbt_project through the existing bind mount below.
+      DBT_PROFILES_DIR: /home/src/dbt_project
+      DBT_HOST: postgres
+      DBT_USER: ${POSTGRES_USER}
+      DBT_PASSWORD: ${POSTGRES_PASSWORD}
+      DBT_DBNAME: ${POSTGRES_DB}
 
     ports:
       - "6789:6789"
