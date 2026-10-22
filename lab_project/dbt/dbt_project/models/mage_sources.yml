@@ -4,6 +4,13 @@ sources:
   name: mage_dbt_project
   schema: dds
   tables:
+  - description: Dataframe for block `run_customer_snapshot` of the `transaction_ingestion`
+      mage pipeline.
+    identifier: mage_transaction_ingestion_run_customer_snapshot
+    meta:
+      block_uuid: run_customer_snapshot
+      pipeline_uuid: transaction_ingestion
+    name: transaction_ingestion_run_customer_snapshot
   - description: Dataframe for block `load_stage` of the `transaction_ingestion` mage
       pipeline.
     identifier: mage_transaction_ingestion_load_stage
@@ -11,4 +18,11 @@ sources:
       block_uuid: load_stage
       pipeline_uuid: transaction_ingestion
     name: transaction_ingestion_load_stage
+  - description: Dataframe for block `export_products_full` of the `transaction_ingestion`
+      mage pipeline.
+    identifier: mage_transaction_ingestion_export_products_full
+    meta:
+      block_uuid: export_products_full
+      pipeline_uuid: transaction_ingestion
+    name: transaction_ingestion_export_products_full
 version: 2

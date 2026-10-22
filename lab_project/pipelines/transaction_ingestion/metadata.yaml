@@ -1,21 +1,97 @@
 blocks:
 - all_upstream_blocks_executed: true
   color: null
-  configuration: {}
+  configuration:
+    file_source:
+      path: data_loaders/load_customers_full.py
   downstream_blocks:
-  - filter_incremental
-  - commit_watermark
+  - export_customers_full
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
-  name: get_extraction_window
+  name: load_customers_full
   retry_config: null
   status: executed
   timeout: null
   type: data_loader
   upstream_blocks: []
-  uuid: get_extraction_window
+  uuid: load_customers_full
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    file_source:
+      path: data_exporters/export_customers_full.py
+  downstream_blocks:
+  - run_customer_snapshot
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: export_customers_full
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - load_customers_full
+  uuid: export_customers_full
+- all_upstream_blocks_executed: true
+  color: teal
+  configuration:
+    file_source:
+      path: custom/run_customer_snapshot.py
+  downstream_blocks:
+  - dbt_dds_load
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: run_customer_snapshot
+  retry_config: null
+  status: executed
+  timeout: null
+  type: custom
+  upstream_blocks:
+  - export_customers_full
+  uuid: run_customer_snapshot
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    file_source:
+      path: data_loaders/load_products_full.py
+  downstream_blocks:
+  - export_products_full
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: load_products_full
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_loader
+  upstream_blocks: []
+  uuid: load_products_full
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    file_source:
+      path: data_exporters/export_products_full.py
+  downstream_blocks:
+  - dbt_dds_load
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: export_products_full
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - load_products_full
+  uuid: export_products_full
 - all_upstream_blocks_executed: true
   color: null
   configuration: {}
@@ -32,6 +108,23 @@ blocks:
   type: data_loader
   upstream_blocks: []
   uuid: load_source_files
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - filter_incremental
+  - commit_watermark
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: get_extraction_window
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_loader
+  upstream_blocks: []
+  uuid: get_extraction_window
 - all_upstream_blocks_executed: true
   color: null
   configuration: {}
@@ -71,7 +164,7 @@ blocks:
   color: null
   configuration: {}
   downstream_blocks:
-  - dbt_transformation
+  - dbt_dds_load
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -87,32 +180,50 @@ blocks:
 - all_upstream_blocks_executed: true
   color: null
   configuration:
-    data_provider: postgres
-    data_provider_profile: default
-    data_provider_schema: control
     dbt:
       command: run
-    dbt_profile_target: dev
+    dbt_profile_target: ''
     dbt_project_name: dbt/dbt_project
     disable_query_preprocessing: false
     export_write_policy: append
     file_source:
-      path: dbts/dbt_transformation.yaml
+      path: dbts/dbt_dds_load.yaml
     use_raw_sql: false
   downstream_blocks:
-  - commit_watermark
+  - test_integrated_dds
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: yaml
-  name: dbt_transformation
+  name: dbt_dds_load
   retry_config: null
   status: executed
   timeout: null
   type: dbt
   upstream_blocks:
+  - run_customer_snapshot
+  - export_products_full
   - load_stage
-  uuid: dbt_transformation
+  uuid: dbt_dds_load
+- all_upstream_blocks_executed: true
+  color: teal
+  configuration:
+    file_source:
+      path: custom/test_integrated_dds.py
+  downstream_blocks:
+  - commit_watermark
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: test_integrated_dds
+  retry_config: null
+  status: executed
+  timeout: null
+  type: custom
+  upstream_blocks:
+  - dbt_dds_load
+  uuid: test_integrated_dds
 - all_upstream_blocks_executed: true
   color: blue
   configuration:
@@ -135,8 +246,8 @@ blocks:
   timeout: null
   type: custom
   upstream_blocks:
-  - dbt_transformation
   - get_extraction_window
+  - test_integrated_dds
   uuid: commit_watermark
 cache_block_output_in_memory: false
 callbacks: []
@@ -161,8 +272,10 @@ tags: []
 type: python
 uuid: transaction_ingestion
 variables:
-  cet_override: '2026-09-02 00:00:00'
+  cet_override: '2026-09-07 00:00:00'
+  customer_file: customers_full_v2.csv
   file_pattern: transactions_*.csv
+  product_file: products_full_v2.csv
   source_folder: /home/src/data/landing
 variables_dir: /home/src/mage_data/lab_project
 widgets: []

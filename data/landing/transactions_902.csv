@@ -1,0 +1,4 @@
+transaction_id,transaction_ts,source_updated_at,customer_id,product_id,quantity,unit_price
+T005,2026-09-05 10:00:00,2026-09-05 11:00:00,C001,P001,1,1050
+T006,2026-09-06 10:00:00,2026-09-06 11:00:00,C003,P003,2,210
+T007,2026-09-06 12:00:00,2026-09-06 13:00:00,C002,P001,1,1050

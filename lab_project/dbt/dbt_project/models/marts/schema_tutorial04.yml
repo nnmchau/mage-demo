@@ -1,0 +1,42 @@
+version: 2
+models:
+  - name: dim_date
+    columns:
+      - name: date_key
+        data_tests: [not_null, unique]
+      - name: full_date
+        data_tests: [not_null, unique]
+  - name: dim_product_scd1
+    columns:
+      - name: product_key
+        data_tests: [not_null, unique]
+      - name: product_name
+        data_tests: [not_null]
+  - name: dim_customer_history
+    columns:
+      - name: customer_version_key
+        data_tests: [not_null, unique]
+      - name: customer_id
+        data_tests: [not_null]
+  - name: fact_sales_enriched
+    columns:
+      - name: transaction_id
+        data_tests: [not_null, unique]
+      - name: date_key
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: product_key
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_product_scd1')
+              field: product_key
+      - name: customer_version_key
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customer_history')
+              field: customer_version_key

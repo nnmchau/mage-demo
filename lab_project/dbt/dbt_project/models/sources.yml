@@ -1,6 +1,10 @@
 version: 2
-
 sources:
+  - name: stage_dimensions
+    schema: stage
+    tables:
+      - name: products
+      - name: customers
   - name: stage
     schema: stage
     tables:

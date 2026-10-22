@@ -1,3 +1,0 @@
-transaction_id,transaction_ts,source_updated_at,customer_id,product_id,quantity,unit_price
-T006,2026-09-02 08:05:00,2026-09-02 08:06:00,C002,P003,2,80.00
-T007,2026-09-02 09:15:00,2026-09-02 09:16:00,C003,P002,1,25.00

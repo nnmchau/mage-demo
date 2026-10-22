@@ -14,6 +14,22 @@ CREATE TABLE IF NOT EXISTS stage.transactions (
     loaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Tutorial 04: Stage Product/Customer full snapshots
+CREATE TABLE IF NOT EXISTS stage.products (
+    product_id VARCHAR(20) PRIMARY KEY,
+    product_name TEXT NOT NULL,
+    subcategory TEXT NOT NULL,
+    category TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS stage.customers (
+    customer_id VARCHAR(20) PRIMARY KEY,
+    customer_name TEXT NOT NULL,
+    city TEXT NOT NULL,
+    region TEXT NOT NULL,
+    customer_updated_at TIMESTAMP NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS control.etl_watermark (
     pipeline_name VARCHAR(100) PRIMARY KEY,
     last_successful_extraction_time TIMESTAMP NOT NULL
@@ -33,4 +49,3 @@ CREATE TABLE IF NOT EXISTS control.processed_transaction (
     transaction_id VARCHAR(20) PRIMARY KEY,
     first_processed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-
